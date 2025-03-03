@@ -24,7 +24,7 @@ function initAutocomplete() {
 
 document.addEventListener('DOMContentLoaded', function () {
     initAutocomplete();
-
+		
     const passwordInput = document.getElementById('booking-form-password');
     const confirmPasswordInput = document.getElementById('booking-form-confirm-password');
     const form = document.querySelector('.booking-form');
@@ -61,3 +61,4 @@ document.addEventListener('DOMContentLoaded', function () {
         form.reset();
     });
 });
+
