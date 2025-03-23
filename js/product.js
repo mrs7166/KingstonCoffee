@@ -34,7 +34,7 @@ $(document).ready(function() {
         // Update the JSON file (Note: For real apps, use a server-side solution)
         $.ajax({
             url: 'products/products.json',
-            type: 'PUT', // or POST, depending on your server setup
+            type: 'PUT', 
             contentType: 'application/json',
             data: JSON.stringify(productData),
             success: function() {
@@ -57,6 +57,8 @@ $(document).ready(function() {
             $('#productUnit').val(foundProduct.productUnit);
             $('#productPrice').val(foundProduct.productPrice);
             $('#productWeight').val(foundProduct.productWeight);
+			console.log("Product found:", foundProduct);
+			
         } else {
             // Clear form
             $('#productDescription').val('');

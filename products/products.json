@@ -1,26 +1,66 @@
 [
   {
-    "productId": "1",
-    "productDescription": "Jamaican Blue Mountain Coffee 1lb",
-    "productCategory": "Coffee",
+    "productId": "JB1",
+    "productDescription": "Blue Mountain Peaberry Blend",
+    "productCategory": "Jamaican Blue Mountain Coffee",
     "productUnit": "lb",
-    "productPrice": 25.99,
+    "productPrice": 45.99,
     "productWeight": 5
   },
   {
-    "productId": "2",
-    "productDescription": "Espresso Beans 1lb",
-    "productCategory": "Coffee",
+    "productId": "JB2",
+    "productDescription": "Blue Mountain Estate Grade 1",
+    "productCategory": "Jamaican Blue Mountain Coffee",
     "productUnit": "lb",
-    "productPrice": 19.99,
+    "productPrice": 38.99,
     "productWeight": 3
   },
   {
-      "productId": "3",
-      "productDescription": "Coffee Mug",
-      "productCategory": "Merchandise",
-      "productUnit": "each",
-      "productPrice": 12.50,
-      "productWeight": 1
+    "productId": "JB3",
+    "productDescription": "Blue Mountain Medium Roast",
+    "productCategory": "Jamaican Blue Mountain Coffee",
+    "productUnit": "lb",
+    "productPrice": 35.99,
+    "productWeight": 3
+  },
+  {
+    "productId": "JB4",
+    "productDescription": "Blue Mountain Dark Roast",
+    "productCategory": "Jamaican Blue Mountain Coffee",
+    "productUnit": "lb",
+    "productPrice": 35.99,
+    "productWeight": 3
+  },
+  {
+    "productId": "CP1",
+    "productDescription": "Artisan Coffee Grinder",
+    "productCategory": "Coffee Products & Accessories",
+    "productUnit": "EA",
+    "productPrice": 64.99,
+    "productWeight": 10
+  },
+  {
+    "productId": "CP2",
+    "productDescription": "French Press (8 Cup)",
+    "productCategory": "Coffee Products & Accessories",
+    "productUnit": "EA",
+    "productPrice": 39.99,
+    "productWeight": 7
+  },
+  {
+    "productId": "CP3",
+    "productDescription": "Coffee Beans Storage Jar",
+    "productCategory": "Coffee Products & Accessories",
+    "productUnit": "EA",
+    "productPrice": 24.99,
+    "productWeight": 3
+  },
+  {
+    "productId": "CP4",
+    "productDescription": "Coffee Tasting Set",
+    "productCategory": "Coffee Products & Accessories",
+    "productUnit": "EA",
+    "productPrice": 49.99,
+    "productWeight": 5
   }
 ]

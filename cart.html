@@ -8,7 +8,7 @@
     <link href="css/style.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa; /* Light gray background */
+			background-color: green;
         }
         .cart-container {
             margin: 50px auto;
@@ -58,7 +58,7 @@
         <div class="cart-container">
             <h2>Shopping Cart</h2>
             <div id="cart-items">
-                </div>
+            </div>
             <div class="cart-total">
                 Total: $<span id="cart-total-price">0.00</span>
             </div>
@@ -70,6 +70,55 @@
     </main>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalPrice = document.getElementById('cart-total-price');
+
+            function displayCart() {
+                cartItemsContainer.innerHTML = '';
+                let total = 0;
+
+                cart.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'cart-item';
+                    itemDiv.innerHTML = `
+                        <span>${item.name}</span>
+                        <span>$${item.price.toFixed(2)}</span>
+                    `;
+                    cartItemsContainer.appendChild(itemDiv);
+                    total += item.price;
+                });
+
+                cartTotalPrice.textContent = total.toFixed(2);
+            }
+
+            displayCart();
+
+            document.getElementById('add-to-cart').addEventListener('click', function() {
+                const productId = document.getElementById('search-product').value;
+                const products = [
+                    { id: "1", name: "Blue Mountain Coffee", price: 29.99 },
+                    { id: "2", name: "Espresso Blend", price: 19.99 },
+                    { id: "3", name: "Decaf Coffee", price: 24.99 },
+                    { id: "4", name: "Cold Brew", price: 14.99 },
+                    { id: "5", name: "Coffee Beans", price: 22.99 },
+                    { id: "6", name: "Coffee Variety Pack", price: 39.99 }
+                ];
+
+                const productToAdd = products.find(product => product.id === productId);
+
+                if (productToAdd) {
+                    cart.push({ id: productToAdd.id, name: productToAdd.name, price: productToAdd.price });
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    displayCart();
+                    document.getElementById('search-product').value = '';
+                } else {
+                    alert('Product ID not found.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

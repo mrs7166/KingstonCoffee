@@ -1,0 +1,59 @@
+fetch('products/products.json')
+    .then(response => response.json())
+    .then(data => {
+        const container = document.querySelector('#section_3 .container .row');
+        container.innerHTML = ''; // Clear existing content
+
+        const categories = {};
+        // Group products by category
+        data.forEach(product => {
+            if (!categories[product.productCategory]) {
+                categories[product.productCategory] = [];
+            }
+            categories[product.productCategory].push(product);
+        });
+
+        Object.keys(categories).forEach(category => {
+            const sectionHTML = `
+                <div class="col-lg-6 col-12 mb-4 mb-lg-0">
+                    <div class="menu-block-wrap">
+                        <div class="text-center mb-4 pb-lg-2">
+                            <em class="text-white">Category: ${category}</em>
+                            <h4 class="text-white">${category}</h4>
+                        </div>
+                        ${categories[category].map(product => `
+                            <div class="menu-block">
+                                <div class="d-flex align-items-center">
+                                    <h6>${product.productDescription}</h6>
+                                    <span class="underline"></span>
+                                    <strong class="ms-auto">$${product.productPrice.toFixed(2)}</strong>
+                                    <button class="btn btn-sm btn-primary ms-2 add-to-cart"
+                                        data-product="${product.productDescription}" data-price="${product.productPrice}">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                                <div class="border-top mt-2 pt-2">
+                                    <small>Unit: ${product.productUnit}, Weight: ${product.productWeight} lbs</small>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += sectionHTML;
+
+            document.querySelectorAll('.add-to-cart').forEach(button => { // Corrected class selector
+                button.addEventListener('click', function() {
+                    const productName = this.dataset.product;
+                    const productPrice = parseFloat(this.dataset.price);
+
+                    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    cart.push({ name: productName, price: productPrice });
+                    localStorage.setItem('cart', JSON.stringify(cart));
+
+                    window.location.href = 'cart.html';
+                });
+            });
+        });
+    })
+    .catch(error => console.error('Error loading products:', error));
