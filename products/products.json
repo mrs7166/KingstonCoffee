@@ -1,0 +1,26 @@
+[
+  {
+    "productId": "1",
+    "productDescription": "Jamaican Blue Mountain Coffee 1lb",
+    "productCategory": "Coffee",
+    "productUnit": "lb",
+    "productPrice": 25.99,
+    "productWeight": 5
+  },
+  {
+    "productId": "2",
+    "productDescription": "Espresso Beans 1lb",
+    "productCategory": "Coffee",
+    "productUnit": "lb",
+    "productPrice": 19.99,
+    "productWeight": 3
+  },
+  {
+      "productId": "3",
+      "productDescription": "Coffee Mug",
+      "productCategory": "Merchandise",
+      "productUnit": "each",
+      "productPrice": 12.50,
+      "productWeight": 1
+  }
+]
