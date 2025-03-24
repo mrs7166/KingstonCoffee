@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Product Management Page">
+    <meta name="author" content="Your Name">
+    <title>Kingston Coffee - Product Management</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <main>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <img src="images/coffee-beans.png" class="navbar-brand-image img-fluid" alt="Barista Cafe Template">
+                    Jamaican Blue Mountain Coffee
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="index.html#section_1">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="index.html#section_2">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="index.html#section_3">Coffee</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="index.html#section_4">Reviews</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="index.html#section_5">Contact</a>
+                        </li>
+                    </ul>
+                    <div class="ms-lg-3">
+                        <a class="btn custom-btn custom-border-btn" href="account.html">
+                            Sign-in / Register
+                            <i class="bi-arrow-up-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="product-form">
+            <div class="container">
+                <h2>Product Management</h2>
+                <form id="productForm">
+                    <div class="mb-3">
+                        <label for="productId" class="form-label">Product ID (Required)</label>
+                        <select class="form-control" id="productId" required>
+                            <option value="">-- Select or Add New --</option>
+                            <option value="new">Add New Product ID</option>
+                        </select>
+                        <input type="text" class="form-control mt-2" id="newProductId" style="display: none;" placeholder="Enter New Product ID">
+                    </div>
+                    <div class="mb-3">
+                        <label for="productDescription" class="form-label">Product Description (Required)</label>
+                        <input type="text" class="form-control" id="productDescription" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productCategory" class="form-label">Product Category (Required)</label>
+                        <input type="text" class="form-control" id="productCategory" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productUnit" class="form-label">Product Unit of Measure (Required)</label>
+                        <input type="text" class="form-control" id="productUnit" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productPrice" class="form-label">Product Price (Required)</label>
+                        <input type="number" class="form-control" id="productPrice" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productWeight" class="form-label">Product Weight (Optional)</label>
+                        <input type="number" class="form-control" id="productWeight">
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="btn btn-primary">Submit / Update</button>
+                        <button type="button" class="btn btn-secondary" id="searchButton">Search Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/product.js"></script>
+ 

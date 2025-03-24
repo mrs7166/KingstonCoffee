@@ -6,34 +6,7 @@
     <title>Shopping Cart</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <style>
-        body {
-			background-color: green;
-        }
-        .cart-container {
-            margin: 50px auto;
-            max-width: 800px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .cart-item {
-            border-bottom: 1px solid #dee2e6;
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-        .cart-total {
-            margin-top: 20px;
-            text-align: right;
-            font-weight: bold;
-        }
-    </style>
+    <link href="css/cart.css" rel="stylesheet">
 </head>
 <body>
     <main>
@@ -43,15 +16,44 @@
                     <img src="images/coffee-beans.png" class="navbar-brand-image img-fluid" alt="Barista Cafe Template">
                     Jamaican Blue Mountain Coffee
                 </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="index.html">Home</a>
+                            <a class="nav-link click-scroll" href="index.html#section_1">Home</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="products.html">Product Management</a>
+                            <a class="nav-link click-scroll" href="index.html#section_2">About</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="index.html#section_3">Coffee</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="index.html#section_4">Reviews</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="index.html#section_5">Contact</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="cart.html">Cart</a>
                         </li>
                     </ul>
+
+                    <div class="ms-lg-3">
+                        <a class="btn custom-btn custom-border-btn" href="account.html">
+                            Sign-in / Register
+                            <i class="bi-arrow-up-right ms-2"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -66,59 +68,11 @@
                 <input type="text" id="search-product" class="form-control" placeholder="Search Product ID">
                 <button id="add-to-cart" class="btn btn-primary mt-2">Add to Cart</button>
             </div>
+			<button id="submit-cart" class="btn btn-success mt-3">Proceed to Payment</button> </div>
         </div>
     </main>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartItemsContainer = document.getElementById('cart-items');
-            const cartTotalPrice = document.getElementById('cart-total-price');
-
-            function displayCart() {
-                cartItemsContainer.innerHTML = '';
-                let total = 0;
-
-                cart.forEach(item => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'cart-item';
-                    itemDiv.innerHTML = `
-                        <span>${item.name}</span>
-                        <span>$${item.price.toFixed(2)}</span>
-                    `;
-                    cartItemsContainer.appendChild(itemDiv);
-                    total += item.price;
-                });
-
-                cartTotalPrice.textContent = total.toFixed(2);
-            }
-
-            displayCart();
-
-            document.getElementById('add-to-cart').addEventListener('click', function() {
-                const productId = document.getElementById('search-product').value;
-                const products = [
-                    { id: "1", name: "Blue Mountain Coffee", price: 29.99 },
-                    { id: "2", name: "Espresso Blend", price: 19.99 },
-                    { id: "3", name: "Decaf Coffee", price: 24.99 },
-                    { id: "4", name: "Cold Brew", price: 14.99 },
-                    { id: "5", name: "Coffee Beans", price: 22.99 },
-                    { id: "6", name: "Coffee Variety Pack", price: 39.99 }
-                ];
-
-                const productToAdd = products.find(product => product.id === productId);
-
-                if (productToAdd) {
-                    cart.push({ id: productToAdd.id, name: productToAdd.name, price: productToAdd.price });
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    displayCart();
-                    document.getElementById('search-product').value = '';
-                } else {
-                    alert('Product ID not found.');
-                }
-            });
-        });
-    </script>
+    <script src="js/cart.js"></script>
 </body>
 </html>
