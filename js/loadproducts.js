@@ -28,7 +28,9 @@ fetch('products/products.json')
                                     <span class="underline"></span>
                                     <strong class="ms-auto">$${product.productPrice.toFixed(2)}</strong>
                                     <button class="btn btn-sm btn-primary ms-2 add-to-cart"
-                                        data-product="${product.productDescription}" data-price="${product.productPrice}">
+                                        data-id="${product.productId}"
+                                        data-product="${product.productDescription}" 
+                                        data-price="${product.productPrice}">
                                         Add to Cart
                                     </button>
                                 </div>
@@ -42,15 +44,29 @@ fetch('products/products.json')
             `;
             container.innerHTML += sectionHTML;
 
-            document.querySelectorAll('.add-to-cart').forEach(button => { // Corrected class selector
+            document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', function() {
+                    const productId = this.dataset.id;
                     const productName = this.dataset.product;
                     const productPrice = parseFloat(this.dataset.price);
 
                     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                    cart.push({ name: productName, price: productPrice });
-                    localStorage.setItem('cart', JSON.stringify(cart));
+                    const existingItem = cart.find(item => item.id === productId);
 
+                    if (existingItem) {
+                        existingItem.quantity = (existingItem.quantity || 0) + 1;
+                    } else {
+                        cart.push({
+                            id: productId,
+                            name: productName,
+                            price: productPrice,
+                            quantity: 1
+                        });
+                    }
+
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    // Optionally, you can update the cart display directly here
+                    // or redirect to the cart page:
                     window.location.href = 'cart.html';
                 });
             });

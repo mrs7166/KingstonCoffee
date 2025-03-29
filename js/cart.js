@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const quantityInput = document.createElement('input');
             quantityInput.type = 'number';
-            quantityInput.value = item.quantity;
+            quantityInput.value = item.quantity || 1;
             quantityInput.min = 1;
             quantityInput.style.width = '50px';
             quantityInput.style.textAlign = 'center';
@@ -61,11 +61,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayCart();
             });
         });
+
+        // Update the cart badge
+        updateCartBadge(cart.length);
+    }
+
+    function updateCartBadge(count) {
+        const badge = document.querySelector('.badge.bg-primary.rounded-pill');
+        if (badge) {
+            badge.textContent = count;
+        }
     }
 
     displayCart();
 
-    $.getJSON('products/products.json')  //run JQuery to pull data from products JSON data file
+    $.getJSON('products/products.json')
         .done(function(data) {
             products = data;
 
@@ -77,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const existingItem = cart.find(item => item.id === productToAdd.productId);
 
                     if (existingItem) {
-                        existingItem.quantity++;
+                        existingItem.quantity = (existingItem.quantity || 0) + 1;
                     } else {
                         cart.push({
                             id: productToAdd.productId,
@@ -94,24 +104,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            document.getElementById('submit-cart').addEventListener('click', () => {
-                $.ajax({ // future API enhancement
-                    url: '/api/cart/submit',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(cart),
-                    success: function(data) {
-                        console.log('Success:', data);
-                        alert('Cart submitted successfully!');
-                        cart = [];
-                        localStorage.setItem('cart', JSON.stringify(cart));
-                        displayCart();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.error('Error:', textStatus, errorThrown);
-                        alert('Failed to submit cart.');
-                    }
-                });
+            
+            // Proceed to Payment button event listener
+            document.getElementById('proceed-to-payment').addEventListener('click', () => {
+                localStorage.setItem('cartForShipping', JSON.stringify(cart)); // Save cart data
+                window.location.href = 'shipping.html';
             });
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
