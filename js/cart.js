@@ -9,11 +9,25 @@ document.addEventListener('DOMContentLoaded', function() {
         let total = 0;
 
         cart.forEach(item => {
+            const product = products.find(p => p.productId === item.id);
             const itemDiv = document.createElement('div');
             itemDiv.className = 'cart-item';
             itemDiv.style.display = 'flex';
             itemDiv.style.justifyContent = 'space-between';
             itemDiv.style.alignItems = 'center';
+            itemDiv.style.marginBottom = '10px';
+            itemDiv.style.paddingBottom = '10px';
+            itemDiv.style.borderBottom = '1px solid #eee';
+
+            const imageDiv = document.createElement('div');
+            imageDiv.style.width = '100px';
+            imageDiv.style.marginRight = '10px';
+            const img = document.createElement('img');
+            img.src = product ? product.productThumbnail : 'images/products/soon.jpg'; // default imnage if no product image found
+            img.alt = product ? product.productDescription : 'Product Image';
+            img.style.width = '100%';
+            img.style.height = 'auto';
+            imageDiv.appendChild(img);
 
             const nameDiv = document.createElement('div');
             nameDiv.style.width = '30%';
@@ -42,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             removeButton.dataset.id = item.id;
             removeButton.textContent = 'Remove';
 
+            itemDiv.appendChild(imageDiv);
             itemDiv.appendChild(nameDiv);
             itemDiv.appendChild(quantityInput);
             itemDiv.appendChild(priceDiv);
@@ -78,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     $.getJSON('products/products.json')
         .done(function(data) {
             products = data;
+            displayCart(); // Re-display cart now that products data is loaded
 
             document.getElementById('add-to-cart').addEventListener('click', function() {
                 const productId = document.getElementById('search-product').value;
@@ -104,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            
+
             // Proceed to Payment button event listener
             document.getElementById('proceed-to-payment').addEventListener('click', () => {
                 localStorage.setItem('cartForShipping', JSON.stringify(cart)); // Save cart data

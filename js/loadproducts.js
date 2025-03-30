@@ -24,12 +24,15 @@ fetch('products/products.json')
                         ${categories[category].map(product => `
                             <div class="menu-block">
                                 <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <img src="${product.productThumbnail}" class="img-fluid rounded" alt="${product.productDescription} Thumbnail" style="width: 70px; height: 70px; object-fit: cover;">
+                                    </div>
                                     <h6>${product.productDescription}</h6>
                                     <span class="underline"></span>
                                     <strong class="ms-auto">$${product.productPrice.toFixed(2)}</strong>
                                     <button class="btn btn-sm btn-primary ms-2 add-to-cart"
                                         data-id="${product.productId}"
-                                        data-product="${product.productDescription}" 
+                                        data-product="${product.productDescription}"
                                         data-price="${product.productPrice}">
                                         Add to Cart
                                     </button>
@@ -65,8 +68,7 @@ fetch('products/products.json')
                     }
 
                     localStorage.setItem('cart', JSON.stringify(cart));
-                    // Optionally, you can update the cart display directly here
-                    // or redirect to the cart page:
+                    
                     window.location.href = 'cart.html';
                 });
             });
