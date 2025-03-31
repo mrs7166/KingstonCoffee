@@ -123,8 +123,8 @@
             </div>
 
             <div class="col-12">
-              <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
-              <input type="email" class="form-control" id="email" placeholder="you@example.com" ng-model="shippingData.email">
+              <label for="email" class="form-label">Email <span class="text-muted"></span></label>
+              <input type="email" class="form-control" id="email" placeholder="you@example.com" required ng-model="shippingData.email">
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -183,12 +183,15 @@
           <BR>
           <div class="col-12">
                 <label for="shipping-services" class="form-label">Shipping Services</label>
-                <select class="form-select" id="shipping-services" ng-model="shippingData.selectedShippingCost" ng-change="updateShippingCost()">
+                <select class="form-select" id="shipping-services" ng-model="shippingData.selectedShippingCost" required ng-change="updateShippingCost()">
                     <option value="">Choose...</option>
                     <option value="9.99">UPS Ground</option>
                     <option value="29.99">UPS 2nd Day</option>
                     <option value="49.99">UPS Next Day</option>
                 </select>
+				<div class="invalid-feedback">
+                Shipping service required.
+              </div>
           </div>
 
           <div id="shipping-cost" class="mt-3">
