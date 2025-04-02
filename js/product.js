@@ -1,90 +1,137 @@
+// product.js
 $(document).ready(function() {
-        let productData = [];
+    let productData = [];
+    let filteredData = [];
+    let editingProductId = null;
 
-        $.getJSON('products/products.json', function(data) {  //use JQuery to fetch the JSON data
-            productData = data;
-            populateProductIdDropdown(data);  //call populate drop down function
+    $.getJSON('products/products.json', function(data) {
+        productData = data;
+        filteredData = data;
+        populateCategoryFilter(data);
+        displayProducts(data);
+    });
+
+    function populateCategoryFilter(data) {
+        const select = $('#filterCategory');
+        const categories = [...new Set(data.map(product => product.productCategory))];
+        categories.forEach(category => {
+            select.append(`<option value="${category}">${category}</option>`);
+        });
+    }
+
+    function displayProducts(data) {
+        const grid = $('#productGrid');
+        grid.empty();
+        data.forEach(product => {
+            grid.append(`
+                <div class="product-item">
+                    <h5 style="color: white;">${product.productId}</h5>
+                    <p>${product.productDescription}</p>
+                    <p>Category: ${product.productCategory}</p>
+                    <p>Price: $${product.productPrice}</p>
+                    <button class="btn btn-primary btn-sm edit-product" data-id="${product.productId}">Edit</button>
+                    <button class="btn btn-danger btn-sm delete-product" data-id="${product.productId}">Delete</button>
+					<img src="${product.productThumbnail || 'images/products/soon.jpg'}" alt="${product.productDescription}" style="width: 50px; height: 50px; margin-left: 10px;">
+                </div>
+            `);
+        });
+    }
+
+    $('#applyFilters').click(function() {
+        const categoryFilter = $('#filterCategory').val();
+        const priceFilter = parseFloat($('#filterPrice').val()) || Infinity;
+        const keywordFilter = $('#filterKeyword').val().toLowerCase();
+
+        filteredData = productData.filter(product => {
+            const categoryMatch = categoryFilter ? product.productCategory === categoryFilter : true;
+            const priceMatch = product.productPrice <= priceFilter;
+            const keywordMatch = product.productDescription.toLowerCase().includes(keywordFilter);
+            return categoryMatch && priceMatch && keywordMatch;
         });
 
-        function populateProductIdDropdown(data) {
-            const select = $('#productId');
-            data.forEach(product => {
-                select.append(`<option value="${product.productId}">${product.productId}</option>`);
-            });
+        displayProducts(filteredData);
+    });
+
+    $('#addProductButton').click(function() {
+        editingProductId = null;
+        $('#productModalLabel').text('Add Product');
+        $('#productId').val('');
+        $('#productDescription').val('');
+        $('#productCategory').val('');
+        $('#productUnit').val('');
+        $('#productPrice').val('');
+        $('#productWeight').val('');
+		$('#productThumbnail').val('');
+        $('#productModal').modal('show');
+    });
+
+    $('#productGrid').on('click', '.edit-product', function() {
+        editingProductId = $(this).data('id');
+        const product = productData.find(p => p.productId === editingProductId);
+        if (product) {
+            $('#productModalLabel').text('Edit Product');
+            $('#productId').val(product.productId);
+            $('#productDescription').val(product.productDescription);
+            $('#productCategory').val(product.productCategory);
+            $('#productUnit').val(product.productUnit);
+            $('#productPrice').val(product.productPrice);
+            $('#productWeight').val(product.productWeight || '');
+			$('#productThumbnail').val(product.productThumbnail || '');
+            $('#productModal').modal('show');
+        }
+    });
+
+    $('#productGrid').on('click', '.delete-product', function() {
+        const deleteId = $(this).data('id');
+        const deleteIndex = productData.findIndex(p => p.productId === deleteId);
+
+        if (deleteIndex !== -1) {
+            productData.splice(deleteIndex, 1);
+            updateProducts();
+        }
+    });
+
+    $('#saveProduct').click(function() {
+        const product = {
+            productId: $('#productId').val(),
+            productDescription: $('#productDescription').val(),
+            productCategory: $('#productCategory').val(),
+            productUnit: $('#productUnit').val(),
+            productPrice: parseFloat($('#productPrice').val()),
+            productWeight: parseFloat($('#productWeight').val()) || null,
+            productThumbnail: $('#productThumbnail').val() 
+        };
+
+        if (editingProductId) {
+            const index = productData.findIndex(p => p.productId === editingProductId);
+            if (index !== -1) {
+                productData[index] = product;
+            }
+        } else {
+            productData.push(product);
         }
 
-        $('#productId').change(function() { //Hide new product id field if we're not adding a new product
-            if ($(this).val() === 'new') {
-                $('#newProductId').show();
-            } else {
-                $('#newProductId').hide();
-            }
-        });
-
-        $('#productForm').submit(function(event) {
-            event.preventDefault();
-
-            let productId = $('#productId').val();
-            if (productId === 'new') {
-                productId = $('#newProductId').val();
-            }
-
-            const product = {
-                productId: productId,
-                productDescription: $('#productDescription').val(),
-                productCategory: $('#productCategory').val(),
-                productUnit: $('#productUnit').val(),
-                productPrice: parseFloat($('#productPrice').val()),
-                productWeight: parseFloat($('#productWeight').val()) || null
-            };
-
-            const existingIndex = productData.findIndex(p => p.productId === productId);
-
-            if (existingIndex !== -1) {
-                productData[existingIndex] = product;
-                console.log("Product updated:", product);
-            } else {
-                productData.push(product);
-                console.log("Product added:", product);
-            }
-
-            $.ajax({  // Call JQuery asynchronously to update the JSON data file with a PUT command. 
-                url: 'products/products.json',
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(productData),
-                success: function() {
-                    console.log('products.json updated successfully');
-                    $.getJSON('products/products.json', function(data) {
-                        productData = data;
-                        $('#productId').empty().append('<option value="">-- Select or Add New --</option><option value="new">Add New Product ID</option>');
-                        populateProductIdDropdown(data);
-                    });
-                },
-                error: function(error) {
-                    console.error('Error updating products.json:', error);
-                }
-            });
-        });
-
-        $('#searchButton').click(function() {  //Allow searching of JSON data by product id.
-            const searchId = $('#productId').val();
-            const foundProduct = productData.find(p => p.productId === searchId);
-
-            if (foundProduct) {
-                $('#productDescription').val(foundProduct.productDescription);
-                $('#productCategory').val(foundProduct.productCategory);
-                $('#productUnit').val(foundProduct.productUnit);
-                $('#productPrice').val(foundProduct.productPrice);
-                $('#productWeight').val(foundProduct.productWeight);
-                console.log("Product found:", foundProduct);
-            } else {
-                $('#productDescription').val('');
-                $('#productCategory').val('');
-                $('#productUnit').val('');
-                $('#productPrice').val('');
-                $('#productWeight').val('');
-                console.log("product not found")
-            }
-        });
+        updateProducts();
+        $('#productModal').modal('hide');
     });
+
+    function updateProducts() {
+        $.ajax({
+            url: 'products/products.json',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(productData),
+            success: function() {
+                $.getJSON('products/products.json', function(data) {
+                    //productData = data;
+                    filteredData = data;
+                    displayProducts(filteredData);
+                    $('#applyFilters').click();
+                });
+            },
+            error: function(error) {
+                console.error('Error updating products.json:', error);
+            }
+        });
+    }
+});

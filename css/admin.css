@@ -38,3 +38,32 @@ body {
             margin-bottom: 30px;
             color: #333;
         }
+		
+        .left-menu {
+            width: 200px;
+            background-color: #f0f0f0;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+        .grid-container {
+            margin-left: 220px; /* Adjust based on left menu width */
+            padding: 20px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .product-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .product-item button {
+            margin-top: 5px;
+        }
+		.modal {
+          margin-top: 75px; /* Adjust this value as needed */
+        }

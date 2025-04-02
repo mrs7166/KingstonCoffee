@@ -9,6 +9,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/admin.css" rel="stylesheet">
+    
 </head>
 <body>
     <main>
@@ -48,43 +49,74 @@
                 </div>
             </div>
         </nav>
-        <div class="product-form">
-            <div class="container">
-                <h2>Product Management</h2>
-                <form id="productForm">
-                    <div class="mb-3">
-                        <label for="productId" class="form-label">Product ID (Required)</label>
-                        <select class="form-control" id="productId" required>
-                            <option value="">-- Select or Add New --</option>
-                            <option value="new">Add New Product ID</option>
-                        </select>
-                        <input type="text" class="form-control mt-2" id="newProductId" style="display: none;" placeholder="Enter New Product ID">
+        <div class="left-menu">
+            <h4>Filter Products</h4>
+            <div class="mb-3">
+                <label for="filterCategory" class="form-label">Category</label>
+                <select class="form-control" id="filterCategory">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="filterPrice" class="form-label">Price (Max)</label>
+                <input type="number" class="form-control" id="filterPrice">
+            </div>
+            <div class="mb-3">
+                <label for="filterKeyword" class="form-label">Product Name Keyword</label>
+                <input type="text" class="form-control" id="filterKeyword">
+            </div>
+            <button class="btn btn-primary" id="applyFilters">Apply Filters</button>
+            <button class="btn btn-success mt-3" id="addProductButton">Add Product</button>
+        </div>
+        <div class="grid-container">
+            <div class="product-grid" id="productGrid">
+                </div>
+        </div>
+
+        <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productModalLabel">Add/Edit Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="productDescription" class="form-label">Product Description (Required)</label>
-                        <input type="text" class="form-control" id="productDescription" required>
+                    <div class="modal-body">
+                        <form id="productForm">
+                            <div class="mb-3">
+                                <label for="productId" class="form-label">Product ID (Required)</label>
+                                <input type="text" class="form-control" id="productId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="productDescription" class="form-label">Product Description (Required)</label>
+                                <input type="text" class="form-control" id="productDescription" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="productCategory" class="form-label">Product Category (Required)</label>
+                                <input type="text" class="form-control" id="productCategory" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="productUnit" class="form-label">Product Unit of Measure (Required)</label>
+                                <input type="text" class="form-control" id="productUnit" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="productPrice" class="form-label">Product Price (Required)</label>
+                                <input type="number" class="form-control" id="productPrice" step="0.01" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="productWeight" class="form-label">Product Weight (Optional)</label>
+                                <input type="number" class="form-control" id="productWeight">
+                            </div>
+                            <div class="mb-3">
+                                <label for="productThumbnail" class="form-label">Product Image URL</label>
+                                <input type="text" class="form-control" id="productThumbnail">
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="productCategory" class="form-label">Product Category (Required)</label>
-                        <input type="text" class="form-control" id="productCategory" required>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="saveProduct">Save Product</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="productUnit" class="form-label">Product Unit of Measure (Required)</label>
-                        <input type="text" class="form-control" id="productUnit" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productPrice" class="form-label">Product Price (Required)</label>
-                        <input type="number" class="form-control" id="productPrice" step="0.01" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productWeight" class="form-label">Product Weight (Optional)</label>
-                        <input type="number" class="form-control" id="productWeight">
-                    </div>
-                    <div class="btn-container">
-                        <button type="submit" class="btn btn-primary">Submit / Update</button>
-                        <button type="button" class="btn btn-secondary" id="searchButton">Search Product</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </main>
@@ -92,4 +124,5 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/product.js"></script>
- 
+</body>
+</html>
