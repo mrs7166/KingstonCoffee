@@ -1,0 +1,17 @@
+[
+    {
+        "userId": null,
+        "userFirstName": null,
+        "userLastName": null,
+        "userEmail": null,
+        "shipAddress": [
+            {
+                "shipAddress1": null,
+                "shipAddress2": null,
+                "shipCountry": null,
+                "shipState": null,
+                "shipZip": null
+            }
+        ]
+    } 
+]

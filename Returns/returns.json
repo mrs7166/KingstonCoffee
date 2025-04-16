@@ -1,0 +1,29 @@
+[
+    {
+        "orderId": null,
+        "products": [
+            {
+                "productId": null,
+                "productDescription": null,
+                "productCategory": null,
+                "productUnit": null,
+                "productPrice": null,
+                "productWeight": null,
+                "productThumbnail": null, 
+                "productCondition": null,
+                "returnReason": null,
+                "returnImage": null
+              }
+        ],
+        "customerId": null,
+        "orderPrice": null,
+        "paymentInfo": [
+            {
+                "nameOnCard": null,
+                "cardNumber": null,
+                "cardExpiration": null,
+                "cardCVC": null
+            }
+        ]
+    } 
+]

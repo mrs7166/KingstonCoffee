@@ -1,0 +1,26 @@
+[
+    {
+        "userId": null,
+        "userFirstName": null,
+        "userLastName": null,
+        "billAddress": [
+            {
+                "billAddress1": null,
+                "billAddress2": null,
+                "billCountry": null,
+                "billState": null,
+                "billZip": null
+            }
+        ],
+        "shippingService": null,
+        "savedCardInfo": [
+            {
+                "cardType": null,
+                "nameOnCard": null,
+                "cardNumber": null,
+                "cardExpiration": null,
+                "cardCVC": null
+            }
+        ]
+    } 
+]

@@ -1,0 +1,18 @@
+[
+    {
+        "cartId": null,
+        "products": [
+            {
+                "productId": null,
+                "productDescription": null,
+                "productCategory": null,
+                "productUnit": null,
+                "productPrice": null,
+                "productWeight": null,
+                "productThumbnail": null
+              }
+        ],
+        "customerId": null,
+        "orderPrice": null
+    } 
+]
