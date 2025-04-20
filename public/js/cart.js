@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Proceed to Payment button event listener
     document.getElementById('proceed-to-payment').addEventListener('click', () => {
-        window.location.href = 'shipping.html'; // Or handle cart data as needed before navigation
+        window.location.href = 'billing.html'; // Or handle cart data as needed before navigation
     });
 
     fetchCart(); // Load the cart when the page loads
