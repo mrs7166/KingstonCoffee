@@ -48,11 +48,24 @@ const cartItemSchema = new Schema({
 });
 const CartItem = model('CartItem', cartItemSchema, 'cart');
 
+// Billing Information Schema and Model (For billing address)
+const billingInfoSchema = new Schema({
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    address: { type: String, required: true },
+    address2: String,
+    country: { type: String, required: true },
+    state: { type: String, required: true },
+    zip: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
+});
+const BillingInfo = model('BillingInfo', billingInfoSchema, 'billing_info');
+
 // Returns Schema and Model
 const returnSchema = new Schema({ /* ... return fields ... */ });
 const Return = model('Return', returnSchema, 'returns');
 
-// Billing Schema and Model
+// Billing Schema and Model (For final transactions - you might use this later)
 const billingSchema = new Schema({ /* ... billing/transaction fields ... */ });
 const Billing = model('Billing', billingSchema, 'billing');
 
@@ -109,7 +122,7 @@ app.delete('/api/products/:id', async (req, res) => {
     }
 });
 
-// --- Shopping Cart API Routes (Modified for single cart) ---
+// --- Shopping Cart API Routes ---
 
 // GET cart (now gets all items)
 app.get('/api/cart', async (req, res) => {
@@ -191,6 +204,19 @@ app.post('/api/cart/remove', async (req, res) => {
     } catch (error) {
         console.error('Error removing cart item:', error);
         res.status(500).json({ message: 'Failed to remove cart item' });
+    }
+});
+
+// --- Billing Information API Route ---
+app.post('/api/billing-info', async (req, res) => {
+    try {
+        const billingData = new BillingInfo(req.body);
+        const savedBillingInfo = await billingData.save();
+        console.log('Billing information saved:', savedBillingInfo);
+        res.status(201).json({ message: 'Billing information saved successfully', data: savedBillingInfo });
+    } catch (error) {
+        console.error('Error saving billing information:', error);
+        res.status(500).json({ message: 'Failed to save billing information', error: error.errors });
     }
 });
 
