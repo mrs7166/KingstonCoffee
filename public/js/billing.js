@@ -28,24 +28,26 @@ angular.module('billingApp', [])
             $scope.total = $scope.subtotal; // Total on this page is just the subtotal
         };
 
-        // Function to handle the "Continue to Shipping" button click
-        $scope.continueToShipping = function() {
-            // You might want to save the billing information to a service or $rootScope
-            // so it can be accessed on the shipping page.
-            console.log('Billing Information:', $scope.billingData);
-
-            // For now, just navigate to the shipping page
-            window.location.href = 'shipping.html';
-        };
-
-        // Function to handle the form submission and potentially save billing info
+        // Function to handle the form submission and save billing info
         $scope.saveBillingInfo = function() {
             console.log('Saving Billing Information:', $scope.billingData);
-            // In a real application, you would likely send this data to your backend
-            // using $http.post to store the billing address.
 
-            // After saving (or if not saving on this page), navigate to the shipping page
-            window.location.href = 'shipping.html';
+            // Send the billing data to your backend API endpoint
+            $http.post('https://kingstoncoffee-server.onrender.com/api/billing-info', $scope.billingData)
+                .then(function(response) {
+                    console.log('Billing information saved successfully:', response.data);
+                    // Optionally, you can redirect the user to the shipping page here
+                    window.location.href = 'shipping.html';
+                })
+                .catch(function(error) {
+                    console.error('Error saving billing information:', error);
+                    // Optionally, display an error message to the user
+                });
+        };
+
+        // Function to handle the "Continue to Shipping" button click
+        $scope.continueToShipping = function() {
+            $scope.saveBillingInfo(); // Call saveBillingInfo when the button is clicked
         };
 
         // Fetch the cart when the controller is initialized
