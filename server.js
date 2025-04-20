@@ -253,6 +253,7 @@ app.post('/api/checkout/shipping', async (req, res) => {
 // --- Other API Routes (Returns, Transactions, etc.) ---
 
 // --- Return Submission API Route ---
+const { v4: uuidv4 } = require('uuid'); // For generating unique IDs
 app.post('/api/returns/submit', async (req, res) => {
     try {
         const returnItems = req.body.items;
