@@ -252,16 +252,38 @@ app.post('/api/checkout/shipping', async (req, res) => {
 
 // --- Other API Routes (Returns, Transactions, etc.) ---
 
-app.post('/api/returns', async (req, res) => {
+// --- Return Submission API Route ---
+app.post('/api/returns/submit', async (req, res) => {
     try {
-        const returnData = req.body;
-        const newReturn = new Return(returnData);
-        await newReturn.save();
-        console.log('Return data saved to MongoDB:', newReturn);
-        res.status(201).json({ message: 'Return data saved successfully to MongoDB.' });
+        const returnItems = req.body.items;
+
+        if (!returnItems || !Array.isArray(returnItems) || returnItems.length === 0) {
+            return res.status(400).json({ message: 'No items provided for return.' });
+        }
+
+        const returnId = uuidv4(); // Generate a unique return ID on the server
+
+        const newReturn = new Return({
+            returnId: returnId,
+            submissionDate: new Date(),
+            items: returnItems.map(item => ({
+                productId: item.productId,
+                productDescription: item.productDescription,
+                price: item.price,
+                imageUrl: item.imageUrl,
+                reason: item.reason,
+                condition: item.condition,
+                returnDetails: item.returnDetails
+            })),
+            // You might want to associate this return with a user later
+        });
+
+        const savedReturn = await newReturn.save();
+        console.log('Return data saved:', savedReturn);
+        res.status(201).json({ message: 'Return request submitted successfully', returnId: returnId, data: savedReturn });
     } catch (error) {
-        console.error('Error saving return data to MongoDB:', error);
-        res.status(500).send('Error saving return data to the database.');
+        console.error('Error saving return data:', error);
+        res.status(500).json({ message: 'Failed to submit return request', error: error.errors });
     }
 });
 
