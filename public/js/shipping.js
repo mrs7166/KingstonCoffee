@@ -3,24 +3,22 @@
 angular.module('shippingApp', [])
     .controller('shippingController', ['$scope', '$http', function($scope, $http) {
         $scope.shippingData = {};
-        $scope.shippingCost = 0.00; // Default cost
+        $scope.shippingCost = 0.00;
         $scope.subtotal = 0;
         $scope.total = 0;
-        $scope.cart = []; // Will hold cart data from the database
+        $scope.cart = [];
 
-        // Function to fetch the cart items from the backend
         $scope.fetchCart = function() {
             $http.get('https://kingstoncoffee-server.onrender.com/api/cart')
                 .then(function(response) {
                     $scope.cart = response.data;
-                    $scope.calculateTotals(); // Calculate totals after fetching the cart
+                    $scope.calculateTotals();
                 })
                 .catch(function(error) {
                     console.error('Error fetching cart:', error);
                 });
         };
 
-        // Function to calculate subtotal and total
         $scope.calculateTotals = function() {
             $scope.subtotal = 0;
             angular.forEach($scope.cart, function(item) {
@@ -35,7 +33,7 @@ angular.module('shippingApp', [])
             } else {
                 $scope.shippingCost = 0.00;
             }
-            $scope.calculateTotals(); // Update total when shipping cost changes
+            $scope.calculateTotals();
         };
 
         $scope.saveShippingInfo = function() {
@@ -45,15 +43,21 @@ angular.module('shippingApp', [])
                 shippingAmount: $scope.shippingCost,
                 totalAmount: $scope.total
             };
-            // In a real application, you would likely send this data to your backend
-            // using $http.post to save the shipping information and proceed with the order.
-            console.log('Shipping Information to Save:', dataToSave);
-            localStorage.setItem('checkoutData', JSON.stringify(dataToSave));
-            alert('Shipping and cart information saved to local storage (for demonstration)!');
-            // You would typically navigate to the payment page here:
-            // window.location.href = 'payment.html';
+
+            // Send the shipping and payment data to the backend
+            $http.post('https://kingstoncoffee-server.onrender.com/api/checkout/shipping', dataToSave)
+                .then(function(response) {
+                    console.log('Shipping information saved successfully:', response.data);
+                    alert('Shipping and payment information saved!');
+                    // Optionally, redirect to a confirmation page
+                    window.location.href = 'order-confirmation.html';
+                })
+                .catch(function(error) {
+                    console.error('Error saving shipping information:', error);
+                    alert('Error saving shipping information.');
+                    // Optionally, display an error message to the user
+                });
         };
 
-        // Fetch the cart when the page loads
         $scope.fetchCart();
     }]);
