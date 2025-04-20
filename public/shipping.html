@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Kingston Coffee - Shipping Information</title>
+    <title>Kingston Coffee - Shipping and Payment Information</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,6 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-lg-auto">
-
                     <li class="nav-item">
                         <a class="nav-link click-scroll" href="cart.html">Back to Cart</a>
                     </li>
@@ -54,7 +53,7 @@
   <main>
     <div class="py-5 text-center">
       <img class="d-block mx-auto mb-4" src="images/coffee-beans.png" alt="" width="72" height="57">
-      <h2>Shipping Information</h2>
+      <h2>Shipping and Payment Information</h2>
     </div>
 
     <div class="row g-5">
@@ -184,8 +183,44 @@
             <p><strong>Shipping Cost:</strong> {{shippingCost | currency}}</p>
           </div>
 
-
           <hr class="my-4">
+
+          <h4>Payment Information</h4>
+
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <label for="cc-name" class="form-label">Name on card</label>
+              <input type="text" class="form-control" id="cc-name" placeholder="" ng-model="shippingData.ccName">
+              <small class="text-muted">Full name as displayed on card</small>
+              <div class="invalid-feedback">
+                Name on card is required
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="cc-number" class="form-label">Credit card number</label>
+              <input type="text" class="form-control" id="cc-number" placeholder="" ng-model="shippingData.ccNumber">
+              <div class="invalid-feedback">
+                Credit card number is required
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label for="cc-expiration" class="form-label">Expiration</label>
+              <input type="text" class="form-control" id="cc-expiration" placeholder="" ng-model="shippingData.ccExpiration">
+              <div class="invalid-feedback">
+                Expiration date required
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label for="cc-cvv" class="form-label">CVV</label>
+              <input type="text" class="form-control" id="cc-cvv" placeholder="" ng-model="shippingData.ccCvv">
+              <div class="invalid-feedback">
+                Security code required
+              </div>
+            </div>
+          </div>
 
           <hr class="my-4">
 
@@ -198,36 +233,27 @@
     <footer class="site-footer">
         <div class="container">
             <div class="row">
-
                 <div class="col-lg-4 col-12 me-auto">
                     <em class="text-white d-block mb-4">Where to find us?</em>
-
                     <strong class="text-white">
                         <i class="bi-geo-alt me-2"></i>
                         35GH+GXR, Kingston, Jamaica
                     </strong>
-
                     <ul class="social-icon mt-4">
                         <li class="social-icon-item">
-                            <a href="#" class="social-icon-link bi-facebook">
-                            </a>
+                            <a href="#" class="social-icon-link bi-facebook"></a>
                         </li>
-
                         <li class="social-icon-item">
-                            <a href="#" target="_new" class="social-icon-link bi-twitter">
-                            </a>
+                            <a href="#" target="_new" class="social-icon-link bi-twitter"></a>
                         </li>
-
                         <li class="social-icon-item">
-                            <a href="#" class="social-icon-link bi-whatsapp">
-                            </a>
+                            <a href="#" class="social-icon-link bi-whatsapp"></a>
                         </li>
                     </ul>
                 </div>
 
                 <div class="col-lg-3 col-12 mt-4 mb-3 mt-lg-0 mb-lg-0">
                     <em class="text-white d-block mb-4">Contact</em>
-
                     <p class="d-flex mb-1">
                         <strong class="me-2">Phone:</strong>
                         <a href="tel: 876-202-8055" class="site-footer-link">
@@ -235,39 +261,30 @@
                             876 202 8055
                         </a>
                     </p>
-
                     <p class="d-flex">
                         <strong class="me-2">Email:</strong>
-
                         <a href="mailto:info@KingstonCoffee.com" class="site-footer-link">
                             hello@KingstonCoffee.com
                         </a>
                     </p>
                 </div>
 
-
                 <div class="col-lg-5 col-12">
                     <em class="text-white d-block mb-4">Opening Hours.</em>
-
                     <ul class="opening-hours-list">
                         <li class="d-flex">
                             Monday - Friday
                             <span class="underline"></span>
-
                             <strong>9:00 - 5:00</strong>
                         </li>
-
                         <li class="d-flex">
                             Saturday
                             <span class="underline"></span>
-
                             <strong>11:00 - 4:30</strong>
                         </li>
-
                         <li class="d-flex">
                             Sunday
                             <span class="underline"></span>
-
                             <strong>Closed</strong>
                         </li>
                     </ul>
