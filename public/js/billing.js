@@ -1,7 +1,7 @@
 // js/billing.js
 
-angular.module('shippingApp', [])
-    .controller('shippingController', ['$scope', '$http', function($scope, $http) {
+angular.module('billingApp', [])
+    .controller('billingController', ['$scope', '$http', function($scope, $http) {
         $scope.billingData = {}; // Holds the billing address information
         $scope.cart = [];        // Holds the cart items
         $scope.subtotal = 0;     // Holds the subtotal of the cart
