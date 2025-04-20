@@ -37,7 +37,7 @@ angular.module('shippingApp', [])
         };
 
         $scope.saveShippingInfo = function() {
-            console.log('Contents of $scope.shippingData:', $scope.shippingData); // Keep this for debugging
+            console.log('Contents of $scope.shippingData:', $scope.shippingData); // For debugging
 
             const dataToSave = {
                 firstName: $scope.shippingData.firstName,
@@ -50,22 +50,26 @@ angular.module('shippingApp', [])
                 zip: $scope.shippingData.zip,
                 sameAddress: $scope.shippingData.sameAddress,
                 selectedShippingCost: $scope.shippingData.selectedShippingCost,
+                ccName: $scope.shippingData.ccName,       // Include credit card name
+                ccNumber: $scope.shippingData.ccNumber,   // Include credit card number
+                ccExpiration: $scope.shippingData.ccExpiration, // Include credit card expiration
+                ccCvv: $scope.shippingData.ccCvv,         // Include credit card CVV
                 cartItems: $scope.cart,
                 shippingAmount: $scope.shippingCost,
                 totalAmount: $scope.total
             };
 
-            console.log('Data being sent to backend:', dataToSave); // Keep this line
+            console.log('Data being sent to backend:', dataToSave); // For debugging
 
             $http.post('https://kingstoncoffee-server.onrender.com/api/checkout/shipping', dataToSave)
                 .then(function(response) {
-                    console.log('Shipping information saved successfully:', response.data);
+                    console.log('Shipping and payment information saved successfully:', response.data);
                     alert('Shipping and payment information saved!');
                     window.location.href = 'order-confirmation.html';
                 })
                 .catch(function(error) {
-                    console.error('Error saving shipping information:', error);
-                    alert('Error saving shipping information.');
+                    console.error('Error saving shipping and payment information:', error);
+                    alert('Error saving shipping and payment information.');
                 });
         };
 
