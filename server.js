@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const session = require('express-session'); // For session management
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,27 +15,6 @@ app.use(bodyParser.json());
 
 // Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
-
-// --- Session Management ---
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key', // Use environment variable for security
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production', httpOnly: true, maxAge: 24 * 60 * 60 * 1000 } // Secure in prod, HTTP only, 24hr max age
-}));
-
-// Middleware to get or create a cart ID for the session
-app.use((req, res, next) => {
-    if (!req.session.cartId) {
-        req.session.cartId = generateUniqueId();
-    }
-    next();
-});
-
-function generateUniqueId() {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-}
-// --- End Session Management ---
 
 // MongoDB Connection
 const mongoURI = process.env.MONGODB_URI || 'YOUR_MONGODB_ATLAS_CONNECTION_STRING';
@@ -57,13 +35,11 @@ const productSchema = new Schema({
     productPrice: Number,
     productWeight: Number,
     productThumbnail: String
-    // ... other product fields as needed
 });
 const Product = model('Product', productSchema, 'products');
 
-// Shopping Cart Item Schema and Model
+// Shopping Cart Item Schema and Model (Removed sessionId)
 const cartItemSchema = new Schema({
-    sessionId: String,
     productId: { type: Schema.Types.ObjectId, ref: 'Product' },
     quantity: Number,
     name: String,
@@ -133,13 +109,12 @@ app.delete('/api/products/:id', async (req, res) => {
     }
 });
 
-// --- Shopping Cart API Routes ---
+// --- Shopping Cart API Routes (Modified for single cart) ---
 
-// GET cart for the current session
+// GET cart (now gets all items)
 app.get('/api/cart', async (req, res) => {
-    const sessionId = req.session.cartId;
     try {
-        const cartItems = await CartItem.find({ sessionId: sessionId });
+        const cartItems = await CartItem.find();
         res.json(cartItems);
     } catch (error) {
         console.error('Error fetching cart:', error);
@@ -147,9 +122,8 @@ app.get('/api/cart', async (req, res) => {
     }
 });
 
-// POST add item to cart
+// POST add item to cart (no sessionId needed)
 app.post('/api/cart/add', async (req, res) => {
-    const sessionId = req.session.cartId;
     const { productId, quantity = 1 } = req.body;
 
     try {
@@ -158,14 +132,13 @@ app.post('/api/cart/add', async (req, res) => {
             return res.status(404).json({ message: 'Product not found' });
         }
 
-        const existingItem = await CartItem.findOne({ sessionId: sessionId, productId: productId });
+        const existingItem = await CartItem.findOne({ productId: productId });
 
         if (existingItem) {
             existingItem.quantity += quantity;
             await existingItem.save();
         } else {
             const newItem = new CartItem({
-                sessionId: sessionId,
                 productId: productId,
                 quantity: quantity,
                 name: product.productDescription,
@@ -175,7 +148,7 @@ app.post('/api/cart/add', async (req, res) => {
             await newItem.save();
         }
 
-        const updatedCart = await CartItem.find({ sessionId: sessionId });
+        const updatedCart = await CartItem.find();
         res.json(updatedCart);
 
     } catch (error) {
@@ -184,20 +157,19 @@ app.post('/api/cart/add', async (req, res) => {
     }
 });
 
-// POST update cart item quantity
+// POST update cart item quantity (no sessionId needed)
 app.post('/api/cart/update', async (req, res) => {
-    const sessionId = req.session.cartId;
     const { productId, quantity } = req.body;
 
     try {
         const updatedItem = await CartItem.findOneAndUpdate(
-            { sessionId: sessionId, productId: productId },
+            { productId: productId },
             { quantity: quantity },
             { new: true }
         );
 
         if (updatedItem) {
-            const updatedCart = await CartItem.find({ sessionId: sessionId });
+            const updatedCart = await CartItem.find();
             res.json(updatedCart);
         } else {
             res.status(404).json({ message: 'Cart item not found' });
@@ -208,14 +180,13 @@ app.post('/api/cart/update', async (req, res) => {
     }
 });
 
-// POST remove cart item
+// POST remove cart item (no sessionId needed)
 app.post('/api/cart/remove', async (req, res) => {
-    const sessionId = req.session.cartId;
     const { productId } = req.body;
 
     try {
-        await CartItem.findOneAndDelete({ sessionId: sessionId, productId: productId });
-        const updatedCart = await CartItem.find({ sessionId: sessionId });
+        await CartItem.findOneAndDelete({ productId: productId });
+        const updatedCart = await CartItem.find();
         res.json(updatedCart);
     } catch (error) {
         console.error('Error removing cart item:', error);
