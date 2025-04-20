@@ -29,6 +29,7 @@ const productSchema = new Schema({
     productWeight: Number,
     productThumbnail: String
 });
+productSchema.index({ productDescription: 'text', productCategory: 'text', productId: 'text' }); // Enable text search
 const Product = model('Product', productSchema, 'products');
 
 // Shopping Cart Item Schema and Model (Removed sessionId)
@@ -79,7 +80,20 @@ const shippingInfoSchema = new Schema({
 const ShippingInfo = model('ShippingInfo', shippingInfoSchema, 'shipping_info'); // Use a different collection name
 
 // Returns Schema and Model
-const returnSchema = new Schema({ /* ... return fields ... */ });
+const returnSchema = new Schema({
+    returnId: { type: String, required: true, unique: true },
+    submissionDate: { type: Date, default: Date.now },
+    items: [{
+        productId: String,
+        productDescription: String,
+        price: Number,
+        imageUrl: String,
+        reason: String,
+        condition: String,
+        returnDetails: String
+    }],
+    // You might want to associate this return with a user later
+});
 const Return = model('Return', returnSchema, 'returns');
 
 // Billing Schema and Model (For final transactions - you might use this later)
@@ -96,6 +110,25 @@ app.get('/api/products', async (req, res) => {
     } catch (error) {
         console.error('Error fetching products:', error);
         res.status(500).json({ message: 'Failed to fetch products' });
+    }
+});
+
+// --- Product Search API Route ---
+app.get('/api/products/search', async (req, res) => {
+    const { query } = req.query;
+
+    if (!query) {
+        return res.json([]); // Return empty array if no query
+    }
+
+    try {
+        // Using $text search (requires text index on relevant fields)
+        const products = await Product.find({ $text: { $search: query } });
+        res.json(products);
+
+    } catch (error) {
+        console.error('Error searching products:', error);
+        res.status(500).json({ message: 'Failed to search products' });
     }
 });
 
@@ -249,8 +282,6 @@ app.post('/api/checkout/shipping', async (req, res) => {
         res.status(500).json({ message: 'Failed to save shipping information', error: error.errors });
     }
 });
-
-// --- Other API Routes (Returns, Transactions, etc.) ---
 
 // --- Return Submission API Route ---
 const { v4: uuidv4 } = require('uuid'); // For generating unique IDs
