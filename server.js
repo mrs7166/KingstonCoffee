@@ -7,23 +7,16 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Enable CORS
 app.use(cors());
-
-// Middleware to parse JSON request bodies
 app.use(bodyParser.json());
-
-// Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// MongoDB Connection
 const mongoURI = process.env.MONGODB_URI || 'YOUR_MONGODB_ATLAS_CONNECTION_STRING';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('Could not connect to MongoDB:', err));
 
-// Define Mongoose Schemas and Models
 const { Schema, model } = mongoose;
 
 // Product Schema and Model
@@ -60,6 +53,30 @@ const billingInfoSchema = new Schema({
     createdAt: { type: Date, default: Date.now }
 });
 const BillingInfo = model('BillingInfo', billingInfoSchema, 'billing_info');
+
+// Shipping Information Schema and Model
+const shippingInfoSchema = new Schema({
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    address: { type: String, required: true },
+    address2: String,
+    country: { type: String, required: true },
+    state: { type: String, required: true },
+    zip: { type: String, required: true },
+    sameAddress: Boolean,
+    selectedShippingCost: Number,
+    paymentMethod: String, // You might want a more detailed payment schema later
+    ccName: String,
+    ccNumber: String,
+    ccExpiration: String,
+    ccCvv: String,
+    cartItems: [cartItemSchema], // Embed the cart items
+    shippingAmount: Number,
+    totalAmount: Number,
+    createdAt: { type: Date, default: Date.now }
+});
+const ShippingInfo = model('ShippingInfo', shippingInfoSchema, 'shipping_info'); // Use a different collection name
 
 // Returns Schema and Model
 const returnSchema = new Schema({ /* ... return fields ... */ });
@@ -217,6 +234,19 @@ app.post('/api/billing-info', async (req, res) => {
     } catch (error) {
         console.error('Error saving billing information:', error);
         res.status(500).json({ message: 'Failed to save billing information', error: error.errors });
+    }
+});
+
+// --- Checkout API Route for Shipping Information ---
+app.post('/api/checkout/shipping', async (req, res) => {
+    try {
+        const shippingData = new ShippingInfo(req.body);
+        const savedShippingInfo = await shippingData.save();
+        console.log('Shipping information saved:', savedShippingInfo);
+        res.status(201).json({ message: 'Shipping information saved successfully', data: savedShippingInfo });
+    } catch (error) {
+        console.error('Error saving shipping information:', error);
+        res.status(500).json({ message: 'Failed to save shipping information', error: error.errors });
     }
 });
 
