@@ -37,25 +37,35 @@ angular.module('shippingApp', [])
         };
 
         $scope.saveShippingInfo = function() {
+            console.log('Contents of $scope.shippingData:', $scope.shippingData); // Keep this for debugging
+
             const dataToSave = {
-                shippingInfo: $scope.shippingData,
+                firstName: $scope.shippingData.firstName,
+                lastName: $scope.shippingData.lastName,
+                email: $scope.shippingData.email,
+                address: $scope.shippingData.address,
+                address2: $scope.shippingData.address2,
+                country: $scope.shippingData.country,
+                state: $scope.shippingData.state,
+                zip: $scope.shippingData.zip,
+                sameAddress: $scope.shippingData.sameAddress,
+                selectedShippingCost: $scope.shippingData.selectedShippingCost,
                 cartItems: $scope.cart,
                 shippingAmount: $scope.shippingCost,
                 totalAmount: $scope.total
             };
 
-            // Send the shipping and payment data to the backend
+            console.log('Data being sent to backend:', dataToSave); // Keep this line
+
             $http.post('https://kingstoncoffee-server.onrender.com/api/checkout/shipping', dataToSave)
                 .then(function(response) {
                     console.log('Shipping information saved successfully:', response.data);
                     alert('Shipping and payment information saved!');
-                    // Optionally, redirect to a confirmation page
                     window.location.href = 'order-confirmation.html';
                 })
                 .catch(function(error) {
                     console.error('Error saving shipping information:', error);
                     alert('Error saving shipping information.');
-                    // Optionally, display an error message to the user
                 });
         };
 
